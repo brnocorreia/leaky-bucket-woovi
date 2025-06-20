@@ -11,6 +11,7 @@ import { errorHandler } from "./utils/error-handler";
 import fastifyJwt from "@fastify/jwt";
 import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
+import { JWTAuthMiddleware } from "./lib/jwt";
 
 const app = fastify({
   logger: true,
@@ -28,6 +29,8 @@ app.addHook("preHandler", (req, reply, next) => {
   req.jwt = app.jwt;
   next();
 });
+
+app.decorate("authenticate", JWTAuthMiddleware);
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);

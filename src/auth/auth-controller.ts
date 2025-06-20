@@ -55,4 +55,25 @@ export async function authController(app: FastifyInstance) {
       return reply.status(200).send({ accessToken });
     }
   );
+
+  app.withTypeProvider<ZodTypeProvider>().get(
+    "/me",
+    {
+      schema: {
+        summary: "Get current user info",
+        tags: ["auth"],
+        response: {
+          200: AuthModel.userResponse,
+        },
+      },
+      preHandler: [app.authenticate],
+    },
+    async (request, reply) => {
+      const { id } = request.user as { id: string; name: string };
+
+      const user = await authService.getUserById(id);
+
+      return reply.status(200).send(user);
+    }
+  );
 }

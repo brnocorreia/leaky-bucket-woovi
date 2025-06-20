@@ -44,4 +44,11 @@ export const authRepository = {
     });
     return user;
   },
+
+  findUserById: async (id: string): Promise<AuthModel.User | undefined> => {
+    const user = await db.query.usersTable.findFirst({
+      where: eq(usersTable.id, id),
+    });
+    return user;
+  },
 };

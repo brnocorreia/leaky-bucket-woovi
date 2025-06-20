@@ -58,4 +58,21 @@ export const authService = {
       updatedAt: user.updatedAt,
     };
   },
+
+  getUserById: async (id: string): Promise<AuthModel.UserResponse> => {
+    const user = await authRepository.findUserById(id);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      randomPixKey: user.randomPixKey,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+  },
 };
